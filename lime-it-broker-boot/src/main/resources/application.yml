@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lime-it-broker-app
+#  config:
+#    # import configuration from another sources.
+#    # depends on environment.
+#    # override existing configuration in application.yml
+#    import: optional:configserver:${CONFIG_IMPORT}
+  jackson:
+    deserialization:
+      accept-single-value-as-array: true
+      fail-on-unknown-properties: false
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+  cloud:
+    config:
+      enabled: false
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: info, health

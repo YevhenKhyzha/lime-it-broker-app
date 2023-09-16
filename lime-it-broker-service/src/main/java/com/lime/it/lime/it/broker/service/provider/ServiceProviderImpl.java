@@ -14,6 +14,12 @@ public class ServiceProviderImpl<T> implements ServiceProvider<T> {
 
     @Override
     public T provide(Class<T> tClass, String qualifier) {
+        try {
             return BeanFactoryAnnotationUtils.qualifiedBeanOfType(beanFactory, tClass, qualifier);
+        } catch (Exception exception) {
+            throw new ServiceProviderException(
+                    String.format("Unable to proved service: %s with qualifier: %s", tClass.getName(), qualifier)
+            );
+        }
     }
 }

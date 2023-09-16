@@ -1,3 +1,8 @@
+lime-it-broker:
+  logging:
+    logging-uri-patterns-list: >
+      /api/*
+
 server:
   port: 8080
 
@@ -19,6 +24,10 @@ spring:
   cloud:
     config:
       enabled: false
+
+logging:
+  level:
+    com.lime.it.lime.it.broker: INFO
 
 management:
   endpoint:

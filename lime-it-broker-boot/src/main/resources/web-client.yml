@@ -1,0 +1,7 @@
+web-client:
+  retry:
+    maxRetryAttempts: 3
+    minBackoffSeconds: 10
+    jitterFactor: 0.7
+    status-list: 500, 503
+    exception-list: java.net.ConnectException

@@ -1,0 +1,4 @@
+lime-it-broker:
+  logging:
+    logging-uri-patterns-list: >
+      /api/*

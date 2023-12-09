@@ -1,19 +1,13 @@
-lime-it-broker:
-  logging:
-    logging-uri-patterns-list: >
-      /api/*
-
 server:
   port: 8080
 
 spring:
   application:
     name: lime-it-broker-app
-#  config:
-#    # import configuration from another sources.
-#    # depends on environment.
-#    # override existing configuration in application.yml
-#    import: optional:configserver:${CONFIG_IMPORT}
+  config:
+    import: >
+      lime-it-broker.yml, 
+      web-client.yml
   jackson:
     deserialization:
       accept-single-value-as-array: true

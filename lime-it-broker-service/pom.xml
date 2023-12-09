@@ -27,6 +27,13 @@
         </dependency>
         <!-- /internal -->
 
+        <!-- external api model -->
+        <dependency>
+            <groupId>com.lime.it</groupId>
+            <artifactId>test-web-application-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

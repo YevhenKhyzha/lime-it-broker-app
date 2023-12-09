@@ -36,6 +36,8 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+
+        <jetty-reactive-httpclient.version>1.1.6</jetty-reactive-httpclient.version>
     </properties>
 
     <dependencyManagement>
@@ -71,6 +73,16 @@
                 <version>${mapstruct.version}</version>
             </dependency>
             <!-- mapstruct -->
+
+            <!-- web client -->
+            <!-- it is needed to create logging for web client on base of jetty client connector -->
+            <!-- netty client connector don't exclude!!! will be used for authentication client -->
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-reactive-httpclient</artifactId>
+                <version>${jetty-reactive-httpclient.version}</version>
+            </dependency>
+            <!-- web client -->
 
         </dependencies>
     </dependencyManagement>

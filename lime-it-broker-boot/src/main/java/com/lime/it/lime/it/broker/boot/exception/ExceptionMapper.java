@@ -3,6 +3,7 @@ package com.lime.it.lime.it.broker.boot.exception;
 import com.lime.it.lime.it.broker.api.error.Error;
 import com.lime.it.lime.it.broker.api.error.ErrorResponse;
 import com.lime.it.lime.it.broker.service.provider.ServiceProviderException;
+import com.lime.it.lime.it.broker.web.client.generic.exception.WebClientFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ExceptionMapper {
 
     @ExceptionHandler(ServiceProviderException.class)
-    public ResponseEntity<ErrorResponse> handleException(
+    public ResponseEntity<ErrorResponse> handleServiceProviderException(
             HttpServletRequest httpServletRequest,
             ServiceProviderException serviceProviderException) {
 
@@ -30,6 +31,21 @@ public class ExceptionMapper {
                 httpServletRequest.getRequestURI(),
                 "CODE",
                 serviceProviderException.getMessage()
+        );
+    }
+
+    @ExceptionHandler(WebClientFailedException.class)
+    public ResponseEntity<ErrorResponse> handleWebClientFailedException(
+            HttpServletRequest httpServletRequest,
+            WebClientFailedException webClientFailedException) {
+
+        log.error(webClientFailedException.getMessage());
+
+        return createResponseEntity(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                httpServletRequest.getRequestURI(),
+                "CODE2",
+                webClientFailedException.getMessage()
         );
     }
 

@@ -1,16 +1,15 @@
-package com.lime.it.lime.it.broker.web.client.generic;
+package com.lime.it.lime.it.broker.web.client.testmodel;
 
 import com.lime.it.lime.it.broker.web.client.generic.configuration.WebClientConfigurationProperties;
 import com.lime.it.lime.it.broker.web.client.generic.exception.WebClientFailedException;
 import com.lime.it.lime.it.broker.web.client.generic.exception.WebClientRetryException;
+import com.lime.it.test.web.api.TestModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.reactive.ClientHttpConnector;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -19,24 +18,20 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
-@Component
+@Service
 @EnableConfigurationProperties(WebClientConfigurationProperties.class)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class GenericWebClient {
+public class TestModelWebClient {
 
-    private final ClientHttpConnector clientHttpConnector;
+    // another way of creation web client. define it in another bean with customizer class adding logger
+    private final WebClient testApplicationModelWebClient;
     private final WebClientConfigurationProperties webClientConfigurationProperties;
 
-    public <T> Optional<T> send(HttpMethod httpMethod, String baseUrl, String body, Class<T> responseObjectClass) {
-        WebClient webClient = WebClient.builder()
-                .clientConnector(clientHttpConnector)
-                .baseUrl(baseUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-
-        WebClient.ResponseSpec responseSpec = webClient
-                .method(httpMethod)
-                .bodyValue(body)
+    public Optional<TestModel> postTestModel(TestModel testModel) {
+        WebClient.ResponseSpec responseSpec =  testApplicationModelWebClient
+                .post()
+                .uri("/api/test")
+                .bodyValue(testModel)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .retrieve();
 
@@ -44,7 +39,7 @@ public class GenericWebClient {
                 .onStatus(status -> Arrays.asList(webClientConfigurationProperties.retry().statusList())
                                 .contains(status.value()),
                         response -> Mono.error(new WebClientRetryException()))
-                .bodyToMono(responseObjectClass)
+                .bodyToMono(TestModel.class)
                 .onErrorMap(exception -> exception.getCause() != null
                                 && Arrays.asList(webClientConfigurationProperties.retry().exceptionList())
                                 .contains(exception.getCause().getClass()),

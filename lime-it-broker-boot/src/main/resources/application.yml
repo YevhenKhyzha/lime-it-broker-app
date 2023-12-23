@@ -6,15 +6,12 @@ spring:
     name: lime-it-broker-app
   config:
     import: >
+      jackson.yml,
       lime-it-broker.yml, 
-      web-client.yml
-  jackson:
-    deserialization:
-      accept-single-value-as-array: true
-      fail-on-unknown-properties: false
-    serialization:
-      write-dates-as-timestamps: false
-    default-property-inclusion: non_null
+      web-client.yml,
+      timer.yml
+  profiles:
+    active: local
   cloud:
     config:
       enabled: false

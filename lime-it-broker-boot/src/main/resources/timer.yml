@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:8083/mysql
+    username: root
+    password: pwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimumIdle: 3
+      maximumPoolSize: 13
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: false
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.yaml
+    drop-first: false
+    enabled: false # todo false because it is needed to resolve a problem Table 'DATABASECHANGELOG' already exists
+  quartz:
+    auto-startup: true
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    wait-for-jobs-to-complete-on-shutdown: true
+    overwrite-existing-jobs-true: true
+    properties:
+      org.quartz.jobStore.isClustered: false # if your database with quartz tables is clustered
+      org.quartz.jobStore.tablePrefix: QRTZ_
+      org.quartz.scheduler.instanceName: broker-quartz
+      org.quartz.scheduler.instanceId: AUTO
+      org.quartz.scheduler.skipUpdateCheck: true
+      org.quartz.jobListener.MDCJobListener.class: com.lime.it.lime.it.broker.timer.listener.BrokerJobListener

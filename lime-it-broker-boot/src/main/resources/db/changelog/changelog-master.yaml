@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - preConditions:
+      - dbms:
+          type: mysql
+
+  - changeSet:
+      id: 1
+      author: yevhen.khyzha
+      comment: set charset for databasechangelog table
+      preConditions:
+        - onFail: WARN # HALT, CONTINUE, MARK_RAN, WARN
+        - tableExists:
+            tableName: DATABASECHANGELOG
+      changes:
+        - sql:
+            splitStatements: true
+            sql: ALTER TABLE DATABASECHANGELOG CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+  - changeSet:
+      id: 2
+      author: yevhen.khyzha
+      comment: set carset for databasechangeloglock table
+      preConditions:
+        - onFail: WARN
+        - tableExists:
+            tableName: DATABASECHANGELOGLOCK
+      changes:
+        - sql:
+            splitStatements: true
+            sql: ALTER TABLE DATABASECHANGELOGLOCK CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+  - changeSet:
+      id: 3
+      author: yevhen.khyzha
+      comment: creation tables for quartz from tables.sql file
+      changes:
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            endDelimiter: ";"
+            path: quartz/tables.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

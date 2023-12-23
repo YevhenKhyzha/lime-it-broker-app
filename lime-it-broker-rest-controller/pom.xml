@@ -31,6 +31,11 @@
             <artifactId>lime-it-broker-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.lime.it</groupId>
+            <artifactId>lime-it-broker-timer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- /internal -->
 
         <!-- web -->

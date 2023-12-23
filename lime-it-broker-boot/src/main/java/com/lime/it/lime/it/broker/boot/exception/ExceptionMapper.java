@@ -3,6 +3,8 @@ package com.lime.it.lime.it.broker.boot.exception;
 import com.lime.it.lime.it.broker.api.error.Error;
 import com.lime.it.lime.it.broker.api.error.ErrorResponse;
 import com.lime.it.lime.it.broker.service.provider.ServiceProviderException;
+import com.lime.it.lime.it.broker.timer.exception.TimerNotExistsException;
+import com.lime.it.lime.it.broker.timer.exception.TimerSchedulerException;
 import com.lime.it.lime.it.broker.web.client.generic.exception.WebClientFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,7 @@ public class ExceptionMapper {
         return createResponseEntity(
                 HttpStatus.BAD_REQUEST,
                 httpServletRequest.getRequestURI(),
-                "CODE",
+                "CODE1",
                 serviceProviderException.getMessage()
         );
     }
@@ -46,6 +48,36 @@ public class ExceptionMapper {
                 httpServletRequest.getRequestURI(),
                 "CODE2",
                 webClientFailedException.getMessage()
+        );
+    }
+
+   @ExceptionHandler(TimerSchedulerException.class)
+    public ResponseEntity<ErrorResponse> handleTimerSchedulerException(
+            HttpServletRequest httpServletRequest,
+            TimerSchedulerException timerSchedulerException) {
+
+        log.error(timerSchedulerException.getMessage());
+
+        return createResponseEntity(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                httpServletRequest.getRequestURI(),
+                "CODE3",
+                timerSchedulerException.getMessage()
+        );
+    }
+
+    @ExceptionHandler(TimerNotExistsException.class)
+    public ResponseEntity<ErrorResponse> handleTimerNotExistsException(
+            HttpServletRequest httpServletRequest,
+            TimerNotExistsException timerNotExistsException) {
+
+        log.error(timerNotExistsException.getMessage());
+
+        return createResponseEntity(
+                HttpStatus.NOT_FOUND,
+                httpServletRequest.getRequestURI(),
+                "CODE4",
+                timerNotExistsException.getMessage()
         );
     }
 
